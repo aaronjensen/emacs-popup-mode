@@ -70,6 +70,38 @@ Modifying this has no effect, unless done before ui/popup loads.")
                  collect (cons (window-buffer w)
                                (window-state-get w)))))
 
+(defun +popup-kill-buffer-hook-h ()
+  "TODO"
+  (when-let (window (get-buffer-window))
+    (when (+popup-window-p window)
+      (let ((+popup--inhibit-transient t))
+        (+popup--delete-window window)))))
+
+(defun +popup--kill-buffer (buffer ttl)
+  "Tries to kill BUFFER, as was requested by a transient timer. If it fails, eg.
+the buffer is visible, then set another timer and try again later."
+  (let ((inhibit-quit t))
+    (cond ((not (buffer-live-p buffer)))
+          ((not (get-buffer-window buffer t))
+           (with-demoted-errors "Error killing transient buffer: %s"
+             (with-current-buffer buffer
+               (let ((kill-buffer-hook (remq '+popup-kill-buffer-hook-h kill-buffer-hook))
+                     confirm-kill-processes)
+                 (when-let (process (get-buffer-process buffer))
+                   (kill-process process))
+                 (let (kill-buffer-query-functions)
+                   ;; HACK The debugger backtrace buffer, when killed, called
+                   ;;      `top-level'. This causes jumpiness when the popup
+                   ;;      manager tries to clean it up.
+                   (cl-letf (((symbol-function #'top-level) #'ignore))
+                     (kill-buffer buffer)))))))
+          ((let ((ttl (if (= ttl 0)
+                          (or (plist-get +popup-defaults :ttl) 3)
+                        ttl)))
+             (with-current-buffer buffer
+               (setq +popup--timer
+                     (run-at-time ttl nil #'+popup--kill-buffer buffer ttl))))))))
+
 (defun +popup--split-window (window size side)
   "Ensure a non-dedicated/popup window is selected when splitting a window."
   (unless +popup--internal
@@ -595,13 +627,32 @@ Any non-nil value besides the above will be used as the raw value for
       (cond ((eq modeline 't))
             ((null modeline)
              ;; TODO use `mode-line-format' window parameter instead (emacs 26+)
-             (hide-mode-line-mode +1))
-            ((let ((hide-mode-line-format
-                    (if (functionp modeline)
-                        (funcall modeline)
-                      modeline)))
-               (hide-mode-line-mode +1)))))))
+             (setq-local mode-line-format nil))
+            (t
+             (setq-local mode-line-format
+                         (if (functionp modeline)
+                             (funcall modeline)
+                           modeline)))))))
 (put '+popup-set-modeline-on-enable-h 'permanent-local-hook t)
+
+(defun +popup-alist-from-window-state (state)
+  "Convert window STATE (from `window-state-get') to a `display-buffer' alist."
+  (let* ((params (alist-get 'parameters state)))
+    `((side          . ,(alist-get 'window-side params))
+      (window-width  . ,(alist-get 'total-width state))
+      (window-height . ,(alist-get 'total-height state))
+      (window-parameters ,@params))))
+
+(defun +popup/restore ()
+  "Restore the last popups that were closed, if any."
+  (interactive)
+  (unless +popup--last
+    (error "No popups to restore"))
+  (cl-loop for (buffer . state) in +popup--last
+           if (buffer-live-p buffer)
+           do (+popup-buffer buffer (+popup-alist-from-window-state state)))
+  (setq +popup--last nil)
+  t)
 
 (defun +popup-kill-buffer-hook-h ()
   "TODO"

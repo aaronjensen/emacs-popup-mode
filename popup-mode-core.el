@@ -1,4 +1,9 @@
-;;; ui/popup/autoload/popup.el -*- lexical-binding: t; -*-
+;;; popup-mode-core.el --- Popup-mode extracted from doom -*- lexical-binding: t; -*-
+
+;; Copyright (c) 2016-2020 Henrik Lissner.
+;; Modifications Copyright (c) 2020 Aaron Jensen.
+
+;;; Code:
 
 (defvar +popup--internal nil)
 
@@ -617,3 +622,7 @@ This advice ensures backwards compatibility for Emacs <= 26 users."
     (when (and (windowp window) display-buffer-mark-dedicated)
       (set-window-dedicated-p window display-buffer-mark-dedicated))
     window))
+
+(provide 'popup-mode-core)
+
+;;; popup-mode-core.el ends here

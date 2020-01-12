@@ -1,4 +1,9 @@
-;;; ui/popup/+hacks.el -*- lexical-binding: t; -*-
+;;; popup-mode-hacks.el --- Popup-mode extracted from doom -*- lexical-binding: t; -*-
+
+;; Copyright (c) 2016-2020 Henrik Lissner.
+;; Modifications Copyright (c) 2020 Aaron Jensen.
+
+;;; Code:
 
 ;; What follows are all the hacks needed to get various parts of Emacs and other
 ;; plugins to cooperate with the popup management system. Essentially, it comes
@@ -343,3 +348,7 @@ Ugh, such an ugly hack."
                 (pcase dir (`up 'above) (`down 'below) (_ dir))
                 window (bound-and-true-p +popup-mode) arg windmove-wrap-around t))))
     (apply orig-fn args)))
+
+(provide 'popup-mode-hacks)
+
+;;; popup-mode-hacks.el ends here

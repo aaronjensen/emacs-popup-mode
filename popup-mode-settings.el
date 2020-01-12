@@ -1,4 +1,9 @@
-;;; ui/popup/autoload/settings.el -*- lexical-binding: t; -*-
+;;; popup-mode-settings.el --- Popup-mode extracted from doom -*- lexical-binding: t; -*-
+
+;; Copyright (c) 2016-2020 Henrik Lissner.
+;; Modifications Copyright (c) 2020 Aaron Jensen.
+
+;;; Code:
 
 ;;;###autoload
 (defvar +popup--display-buffer-alist nil)
@@ -188,3 +193,7 @@ Example:
   (when (bound-and-true-p +popup-mode)
     (setq display-buffer-alist +popup--display-buffer-alist))
   +popup--display-buffer-alist)
+
+(provide 'popup-mode-settings)
+
+;;; popup-mode-settings.el ends here

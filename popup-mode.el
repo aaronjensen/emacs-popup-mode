@@ -1,4 +1,9 @@
-;;; ui/popup/config.el -*- lexical-binding: t; -*-
+;;; popup-mode.el --- Popup-mode extracted from doom -*- lexical-binding: t; -*-
+
+;; Copyright (c) 2016-2020 Henrik Lissner.
+;; Modifications Copyright (c) 2020 Aaron Jensen.
+
+;;; Code:
 
 (defconst +popup-window-parameters '(ttl quit select modeline popup)
   "A list of custom parameters to be added to `window-persistent-parameters'.
@@ -173,3 +178,7 @@ prevent the popup(s) from messing up the UI (or vice versa)."
 ;; Hacks
 
 (load! "+hacks")
+
+(provide 'popup-mode)
+
+;;; popup-mode.el ends here

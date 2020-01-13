@@ -138,6 +138,10 @@ prevent the popup(s) from messing up the UI (or vice versa)."
   "When non-nil, treats all buffers that begin with `*' or ` *' as popups.")
 (defcustom popup-mode-defaults-rule t
   "When non-nil, sets up rules for many common popups.")
+(defcustom popup-mode-enable-hacks nil
+  "When non-nil, load some hack for various packages.
+Must be set before requiring popup-mode. See popup-mode-hacks.el
+for more info.")
 
 (set-popup-rules!
   (when popup-mode-all-rule
@@ -185,7 +189,8 @@ prevent the popup(s) from messing up the UI (or vice versa)."
 ;;
 ;; Hacks
 
-;; (load! "+hacks")
+(when popup-mode-enable-hacks
+  (require 'popup-mode-hacks))
 
 (provide 'popup-mode)
 

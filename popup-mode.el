@@ -3,6 +3,9 @@
 ;; Copyright (c) 2016-2020 Henrik Lissner.
 ;; Modifications Copyright (c) 2020 Aaron Jensen.
 
+;; Version: 0.0.1
+;; Package-Requires: (hide-mode-line)
+
 ;;; Code:
 
 (defconst +popup-window-parameters '(ttl quit select modeline popup)

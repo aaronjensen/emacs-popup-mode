@@ -7,6 +7,8 @@
 ;; Package-Requires: (hide-mode-line)
 
 ;;; Code:
+(require 'popup-mode-core)
+(require 'popup-mode-settings)
 
 (defconst +popup-window-parameters '(ttl quit select modeline popup)
   "A list of custom parameters to be added to `window-persistent-parameters'.

@@ -138,7 +138,7 @@ prevent the popup(s) from messing up the UI (or vice versa)."
 
 (defcustom popup-mode-all-rule nil
   "When non-nil, treats all buffers that begin with `*' or ` *' as popups.")
-(defcustom popup-mode-defaults-rule nil
+(defcustom popup-mode-defaults-rule t
   "When non-nil, sets up rules for many common popups.")
 
 (set-popup-rules!

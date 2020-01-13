@@ -131,11 +131,16 @@ prevent the popup(s) from messing up the UI (or vice versa)."
 ;;
 ;; Default popup rules & bootstrap
 
+(defcustom popup-mode-all-rule nil
+  "When non-nil, treats all buffers that begin with `*' or ` *' as popups.")
+(defcustom popup-mode-defaults-rule nil
+  "When non-nil, sets up rules for many common popups.")
+
 (set-popup-rules!
-  (when (featurep! +all)
+  (when popup-mode-all-rule
     '(("^\\*"  :slot 1 :vslot -1 :select t)
       ("^ \\*" :slot 1 :vslot -1 :size +popup-shrink-to-fit)))
-  (when (featurep! +defaults)
+  (when popup-mode-defaults-rule
     '(("^\\*Completions" :ignore t)
       ("^\\*\\(?:[Cc]ompil\\(?:ation\\|e-Log\\)\\|Messages\\)"
        :vslot -2 :size 0.3  :autosave t :quit t :ttl nil)

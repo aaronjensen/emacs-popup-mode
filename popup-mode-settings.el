@@ -42,7 +42,7 @@
                    ,@alist
                    (window-parameters ,@params)))))
 
-;;;###autodef
+;;;###autoload
 (defun set-popup-rule! (predicate &rest plist)
   "Define a popup rule.
 
@@ -170,7 +170,7 @@ used.
     (setq display-buffer-alist +popup--display-buffer-alist))
   +popup--display-buffer-alist)
 
-;;;###autodef
+;;;###autoload
 (defun set-popup-rules! (&rest rulesets)
   "Defines multiple popup rules.
 

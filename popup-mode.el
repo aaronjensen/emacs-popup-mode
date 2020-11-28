@@ -162,7 +162,7 @@ for more info.")
       ("^\\*Calc"
        :vslot -7 :side bottom :size 0.4 :select t :quit nil :ttl 0)
       ("^\\*Customize"
-       :slot 2 :side right :select t :quit t)
+       :slot 2 :side right :size 70 :select t :quit t)
       ("^ \\*undo-tree\\*"
        :slot 2 :side left :size 20 :select t :quit t)
       ;; `help-mode', `helpful-mode'

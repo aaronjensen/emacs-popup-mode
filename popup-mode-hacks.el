@@ -31,6 +31,8 @@
 ;;
 ;;; Core functions
 
+(require 'popup-mode)
+
 (defun doom-enlist (exp)
   "Return EXP wrapped in a list, or as-is if already a list."
   (declare (pure t) (side-effect-free t))

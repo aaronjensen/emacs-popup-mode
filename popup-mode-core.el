@@ -112,20 +112,7 @@ the buffer is visible, then set another timer and try again later."
         (setf (alist-get param alist) size))
       (setf (alist-get 'window-parameters alist)
             parameters)
-      ;; Fixes #1305: addresses an edge case where a popup with a :size, :width
-      ;; or :height greater than the current frame's dimensions causes
-      ;; hanging/freezing (a bug in Emacs' `display-buffer' API perhaps?)
-      (let ((width  (cdr (assq 'window-width  alist)))
-            (height (cdr (assq 'window-height alist))))
-        (setf (alist-get 'window-width alist)
-              (if (numberp width)
-                  (min width (frame-width))
-                width))
-        (setf (alist-get 'window-height alist)
-              (if (numberp height)
-                  (min height (frame-height))
-                height))
-        alist))))
+      alist)))
 
 (defun +popup--split-window (window size side)
   "Ensure a non-dedicated/popup window is selected when splitting a window."

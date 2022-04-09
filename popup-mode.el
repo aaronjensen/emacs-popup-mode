@@ -180,9 +180,7 @@ for more info.")
 
 (add-hook 'doom-init-ui-hook #'+popup-mode 'append)
 
-(dolist (hook '(+popup-adjust-fringes-h
-                +popup-adjust-margins-h
-                +popup-set-modeline-on-enable-h
+(dolist (hook '(+popup-set-modeline-on-enable-h
                 +popup-unset-modeline-on-disable-h))
   (add-hook '+popup-buffer-mode-hook hook))
 

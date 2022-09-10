@@ -50,7 +50,7 @@ adjustment.")
 (defvar +popup-buffer-mode-map
   (let ((map (make-sparse-keymap)))
     ;; AJ: Disable until we have an equivalent
-    ;; (when (featurep! :editor evil)
+    ;; (when (modulep! :editor evil)
     ;;   ;; For maximum escape coverage in emacs state buffers; this only works in
     ;;   ;; GUI Emacs, in tty Emacs use C-g instead
     ;;   (define-key map [escape] #'doom/escape))
@@ -80,7 +80,6 @@ adjustment.")
 
 (define-minor-mode +popup-buffer-mode
   "Minor mode for individual popup windows.
-
 It is enabled when a buffer is displayed in a popup window and disabled when
 that window has been changed or closed."
   :init-value nil
@@ -119,6 +118,7 @@ prevent the popup(s) from messing up the UI (or vice versa)."
   `(let* ((in-popup-p (+popup-buffer-p))
           (popups (+popup-windows))
           (+popup--inhibit-transient t)
+          buffer-list-update-hook
           +popup--last)
      (dolist (p popups)
        (+popup/close p 'force))
@@ -149,6 +149,8 @@ for more info.")
       ("^ \\*" :slot 1 :vslot -1 :size +popup-shrink-to-fit)))
   (when popup-mode-defaults-rule
     '(("^\\*Completions" :ignore t)
+      ("^\\*Local variables\\*$"
+       :vslot -1 :slot 1 :size +popup-shrink-to-fit)
       ("^\\*\\(?:[Cc]ompil\\(?:ation\\|e-Log\\)\\|Messages\\)"
        :vslot -2 :size 0.3  :autosave t :quit t :ttl nil)
       ("^\\*\\(?:doom \\|Pp E\\)"  ; transient buffers (no interaction required)
@@ -162,25 +164,30 @@ for more info.")
       ("^\\*Calc"
        :vslot -7 :side bottom :size 0.4 :select t :quit nil :ttl 0)
       ("^\\*Customize"
-       :slot 2 :side right :size 70 :select t :quit t)
+       :slot 2 :side right :size 0.5 :select t :quit nil)
       ("^ \\*undo-tree\\*"
        :slot 2 :side left :size 20 :select t :quit t)
       ;; `help-mode', `helpful-mode'
-      ("^\\*[Hh]elp"
-       :slot 2 :vslot -8 :size 0.35 :select t)
+      ("^\\*\\([Hh]elp\\|Apropos\\)"
+       :slot 2 :vslot -8 :size 0.42 :select t)
       ("^\\*eww\\*"  ; `eww' (and used by dash docsets)
        :vslot -11 :size 0.35 :select t)
+      ("^\\*xwidget"
+       :vslot -11 :size 0.35 :select nil)
       ("^\\*info\\*$"  ; `Info-mode'
        :slot 2 :vslot 2 :size 0.45 :select t)))
   '(("^\\*Warnings" :vslot 99 :size 0.25)
     ("^\\*Backtrace" :vslot 99 :size 0.4 :quit nil)
     ("^\\*CPU-Profiler-Report "    :side bottom :vslot 100 :slot 1 :height 0.4 :width 0.5 :quit nil)
     ("^\\*Memory-Profiler-Report " :side bottom :vslot 100 :slot 2 :height 0.4 :width 0.5 :quit nil)
-    ("^\\*\\(?:Proced\\|timer-list\\|Process List\\|Abbrevs\\|Output\\|Occur\\|unsent mail\\)\\*" :ignore t)))
+    ("^\\*Process List\\*" :side bottom :vslot 101 :size 0.25 :select t :quit t)
+    ("^\\*\\(?:Proced\\|timer-list\\|Abbrevs\\|Output\\|Occur\\|unsent mail.*?\\|message\\)\\*" :ignore t)))
 
 (add-hook 'doom-init-ui-hook #'+popup-mode 'append)
 
-(dolist (hook '(+popup-set-modeline-on-enable-h
+(dolist (hook '(+popup-adjust-fringes-h
+                +popup-adjust-margins-h
+                +popup-set-modeline-on-enable-h
                 +popup-unset-modeline-on-disable-h))
   (add-hook '+popup-buffer-mode-hook hook))
 

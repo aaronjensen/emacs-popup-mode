@@ -566,6 +566,15 @@ Ugh, such an ugly hack."
             window (bound-and-true-p +popup-mode) arg windmove-wrap-around t))
     (apply fn args)))
 
+;; AJ: My hacks below here
+
+;;;###package multi-vterm
+(defadvice! +popup--use-popup-window-for-multi-vterm-project-a (fn &rest args)
+  :around #'multi-vterm-project
+  (letf! ((#'switch-to-buffer-other-window #'pop-to-buffer))
+    (apply fn args)))
+
+
 (provide 'popup-mode-hacks)
 
 ;;; popup-mode-hacks.el ends here

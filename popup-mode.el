@@ -185,7 +185,8 @@ for more info.")
 
 (add-hook 'doom-init-ui-hook #'+popup-mode 'append)
 
-(dolist (hook '(+popup-adjust-fringes-h
+(dolist (hook '(;; AJ: Do not hide fringes
+                ;; +popup-adjust-fringes-h
                 +popup-adjust-margins-h
                 +popup-set-modeline-on-enable-h
                 +popup-unset-modeline-on-disable-h))

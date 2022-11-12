@@ -8,6 +8,8 @@
 (eval-when-compile
   (require 'cl-macs))
 
+(require 'popup-mode)
+
 (defvar +popup--internal nil)
 
 (defun +popup--remember (windows)

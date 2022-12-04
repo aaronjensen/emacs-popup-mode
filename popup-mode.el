@@ -57,6 +57,7 @@ adjustment.")
     map)
   "Active keymap in popup windows. See `+popup-buffer-mode'.")
 
+;;;###autoload
 (define-minor-mode +popup-mode
   "Global minor mode representing Doom's popup management system."
   :init-value nil
@@ -78,6 +79,7 @@ adjustment.")
            (delq (assq prop window-persistent-parameters)
                  window-persistent-parameters)))))
 
+;;;###autoload
 (define-minor-mode +popup-buffer-mode
   "Minor mode for individual popup windows.
 It is enabled when a buffer is displayed in a popup window and disabled when

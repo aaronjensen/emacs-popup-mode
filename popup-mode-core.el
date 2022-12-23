@@ -422,7 +422,11 @@ If no popups are available, display the *Messages* buffer in a popup window."
     (error "No popups to restore"))
   (cl-loop for (buffer . state) in +popup--last
            if (buffer-live-p buffer)
-           do (+popup-buffer buffer (+popup-alist-from-window-state state)))
+           do (+popup-buffer
+               buffer
+               `((window-width . ,(alist-get 'total-width state))
+                 (window-height . ,(alist-get 'total-height state))
+                 ,@(display-buffer-assq-regexp buffer display-buffer-alist nil))))
   (setq +popup--last nil)
   t)
 

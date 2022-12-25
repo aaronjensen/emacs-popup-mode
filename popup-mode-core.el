@@ -164,7 +164,7 @@ and enables `+popup-buffer-mode'."
     (set-window-parameter window 'split-window #'+popup--split-window)
     (set-window-parameter window 'delete-window #'+popup--delete-window)
     (set-window-parameter window 'delete-other-windows #'+popup--delete-other-windows)
-    (set-window-dedicated-p window 'popup)
+    (set-window-dedicated-p window 'side)
     (window-preserve-size
      window (memq (window-parameter window 'window-side)
                   '(left right))

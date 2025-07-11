@@ -476,12 +476,11 @@ Ugh, such an ugly hack."
           (delete-window window)))))
 
   ;; Ensure todo, agenda, and other minor popups are delegated to the popup system.
-  (defadvice! +popup--org-pop-to-buffer-a (fn buf &optional norecord)
+  (defadvice! +popup--org-pop-to-buffer-a (fn &rest args)
     "Use `pop-to-buffer' instead of `switch-to-buffer' to open buffer.'"
-    :around #'org-switch-to-buffer-other-window
-    (if +popup-mode
-        (pop-to-buffer buf nil norecord)
-      (funcall fn buf norecord))))
+    :around #'org-mks
+    (letf! ((#'switch-to-buffer-other-window #'pop-to-buffer))
+      (apply fn args))))
 
 
 ;;;###package org-journal
